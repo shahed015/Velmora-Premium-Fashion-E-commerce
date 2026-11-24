@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import IconButton from "../ui/IconButton";
 
@@ -25,6 +25,21 @@ function MenuIcon({ open }) {
 
 export default function MobileNavigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        triggerRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   return (
     <div className="md:hidden">
@@ -34,28 +49,28 @@ export default function MobileNavigation() {
         aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
         icon={<MenuIcon open={isOpen} />}
         onClick={() => setIsOpen((open) => !open)}
+        ref={triggerRef}
       />
-      {isOpen && (
-        <nav
-          aria-label="Mobile navigation"
-          className="absolute inset-x-0 top-full border-y border-line bg-canvas px-4 py-3 shadow-lg"
-          id="mobile-primary-navigation"
-        >
-          <ul className="mx-auto flex max-w-7xl flex-col">
-            {links.map(({ href, label }) => (
-              <li className="border-b border-line last:border-b-0" key={href}>
-                <Link
-                  className="block py-4 text-sm tracking-[0.04em] transition-colors hover:text-accent-strong"
-                  href={href}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
+      <nav
+        aria-label="Mobile navigation"
+        className="absolute inset-x-0 top-full border-y border-line bg-canvas px-4 py-3 shadow-lg md:hidden"
+        hidden={!isOpen}
+        id="mobile-primary-navigation"
+      >
+        <ul className="mx-auto flex max-w-7xl flex-col">
+          {links.map(({ href, label }) => (
+            <li className="border-b border-line last:border-b-0" key={href}>
+              <Link
+                className="block py-4 text-sm tracking-[0.04em] transition-colors hover:text-accent-strong"
+                href={href}
+                onClick={() => setIsOpen(false)}
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

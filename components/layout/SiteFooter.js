@@ -51,7 +51,7 @@ export default function SiteFooter() {
         ))}
 
         <p className="border-t border-line pt-5 text-xs text-ink-muted sm:col-span-2 md:col-span-4">
-          © {new Date().getFullYear()} Velmora. All rights reserved.
+          © 2026 Velmora. All rights reserved.
         </p>
       </Container>
     </footer>

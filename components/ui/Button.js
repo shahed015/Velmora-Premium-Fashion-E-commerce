@@ -20,22 +20,31 @@ export default function Button({
   className = "",
   disabled = false,
   href,
+  onClick,
   size = "md",
+  tabIndex,
   type = "button",
   variant = "primary",
   ...props
 }) {
   const classes = `${baseStyles} ${variants[variant] ?? variants.primary} ${sizes[size] ?? sizes.md} ${className}`;
 
+  if (href && disabled) {
+    return (
+      <span {...props} aria-disabled="true" className={classes}>
+        {children}
+      </span>
+    );
+  }
+
   if (href) {
     return (
       <Link
-        aria-disabled={disabled || undefined}
+        {...props}
         className={classes}
         href={href}
-        onClick={disabled ? (event) => event.preventDefault() : undefined}
-        tabIndex={disabled ? -1 : props.tabIndex}
-        {...props}
+        onClick={onClick}
+        tabIndex={tabIndex}
       >
         {children}
       </Link>
@@ -44,10 +53,12 @@ export default function Button({
 
   return (
     <button
+      {...props}
       className={classes}
       disabled={disabled}
+      onClick={onClick}
+      tabIndex={tabIndex}
       type={type}
-      {...props}
     >
       {children}
     </button>

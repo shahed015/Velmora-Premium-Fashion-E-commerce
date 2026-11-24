@@ -9,15 +9,6 @@ const links = [
   { href: "/shop?category=clothing", label: "Clothing" },
 ];
 
-function SearchIcon() {
-  return (
-    <svg className="size-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="10.8" cy="10.8" r="6.3" />
-      <path d="m15.5 15.5 4.2 4.2" />
-    </svg>
-  );
-}
-
 function AccountIcon() {
   return (
     <svg className="size-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
@@ -67,7 +58,6 @@ export default function SiteHeader() {
         </Link>
 
         <div className="flex items-center justify-self-end gap-1 sm:gap-2">
-          <IconButton aria-label="Search products" className="hidden sm:inline-flex" href="/shop" icon={<SearchIcon />} />
           <IconButton aria-label="Account" className="hidden sm:inline-flex" href="/account" icon={<AccountIcon />} />
           <IconButton aria-label="Shopping bag" href="/cart" icon={<BagIcon />} />
         </div>
